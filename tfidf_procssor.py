@@ -25,6 +25,7 @@ stemmer = PorterStemmer()
 json_file_path = '/home/duc07/data/1productItems_1089.json'
 cat_id = 1391
 
+flag_es_dict = {}
 
 def stem_tokens(tokens, stemmer):
     stemmed = []
@@ -93,6 +94,10 @@ def write_similar_products_of_item_to_file(i, token_dict, ls_top_sim):
     # store to ElasticSearch
     pItemId = token_dict[i][0]
     pItemName = token_dict[i][1]
+    if pItemId in flag_es_dict:
+        print 'Conflict when saving productItemId: ' + str(pItemId) + '\n'
+    else:
+        flag_es_dict[pItemId] = 1
     save_to_elasticsearch(pItemId, pItemName, ls_top_sim)
 
 
